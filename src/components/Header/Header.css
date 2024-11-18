@@ -1,0 +1,156 @@
+ .header {
+  width: 100%;
+  height: 80px;
+  line-height: 80px;
+  background-color: #fff;
+  position: relative;
+}
+
+ .sticky__header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  box-shadow: 3px 3px 8px -3px #dddddd;
+  z-index: 999;
+}
+
+ .logo img {
+  width: 30%;
+}
+
+ .menu {
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav_item a {
+  text-decoration: none;
+  color: var(--heading-color);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.nav_item a:hover {
+  color: inherit;
+}
+
+.nav_item a.active_link {
+  color: var(--secondary-color);
+}
+
+ .profile_pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.dropdown_menu {
+  position: absolute;
+  top: 80px;
+  right: 50px;
+  background-color: var(--secondary-color);
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  z-index: 100;
+}
+
+.dropdown_menu span {
+  display: block;
+  
+  border-bottom: 1px solid #00000043;
+  
+  color: var(--heading-color);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.dropdown_menu .btn {
+  width: 100%;
+  color: #fff;
+  background-color: #cc8015;
+  border: none;
+  font-weight: 600;
+  font-size: 18px;
+  transition: 0.3s ease-in-out;
+}
+
+.dropdown_menu .btn:hover {
+  background-color: #959595;
+  color: var(--heading-color);
+}
+
+ .mobile_menu {
+  font-size: 1.3rem;
+  color: var(--heading-color);
+  display: none;
+}
+
+ .menu_overlay {
+  position: fixed;
+  top: 80px;  
+  left: 0;
+  width: 100%;
+  height: calc(100% - 80px);
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 98;
+}
+
+
+
+.navigation.active {
+  display: flex;
+  
+  
+}
+
+ @media (max-width: 768px) {
+  .logo img {
+    width: 130px;
+  }
+
+  .menu {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    z-index: 99;
+  }
+
+  .mobile_menu {
+    display: block;
+    color: var(--secondary-color);
+    font-size: 2rem;
+  }
+ .navigation {
+  display: none;
+}
+
+  .nav_right {
+    display: none;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+ 
+
