@@ -12,11 +12,16 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Alert,
 } from "reactstrap";
-import PhoneInput from "react-phone-number-input";
-import "react-phone-number-input/style.css";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase"; // افترض أن ملف إعداد Firebase يحتوي على `db` من Firestore
+import {
+  collection,
+  addDoc,
+  getDocs,
+  updateDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import "./TourDetails.css";
 import user_img from "../../assets/images/user.png";
 import { RiEditLine, RiDeleteBin6Line } from "react-icons/ri";
@@ -24,25 +29,9 @@ import BookingForm from "../Booking/Booking";
 
 export default function TourDetails() {
   const navigate = useNavigate();
-
-  const handleLoginRedirect = () => {
-    setShowLoginAlert(false);
-    navigate("/login");
-  };
-  const handleBooking = () => {
-    if (!currentUser) {
-      setShowLoginAlert(true);
-      return;
-    }
-
-    navigate("/booking-confirmation");
-  };
   const location = useLocation();
-  const { img, country, landmark, price, people, description, rating } =
-    location.state;
+  const { img, country, landmark, price, people, description } = location.state;
 
-  const [phone, setPhone] = useState("");
-  const [date, setDate] = useState("");
   const [comment, setComment] = useState("");
   const [commentsList, setCommentsList] = useState([]);
   const [editingComment, setEditingComment] = useState(null);
@@ -54,19 +43,24 @@ export default function TourDetails() {
   const currentUser = auth.currentUser;
   const userName =
     currentUser?.displayName || currentUser?.email || "User with no name";
-  const userEmail = currentUser?.email
-    ? currentUser.email
-    : "No Email provided";
-
+  const userEmail = currentUser?.email || "No Email provided";
   const userPhoto = currentUser?.photoURL || user_img;
 
-  const handlePhoneChange = (value) => setPhone(value);
-  const handleDateChange = (e) => setDate(e.target.value);
-  const handleCommentChange = (e) => setComment(e.target.value);
+  const commentsCollectionRef = collection(db, `comments-${landmark}`);
 
-  const handleStarChange = (rating) => setStarRating(rating);
+  // جلب التعليقات من Firestore
+  const fetchComments = async () => {
+    try {
+      const data = await getDocs(commentsCollectionRef);
+      const comments = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      setCommentsList(comments);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  };
 
-  const handleCommentSubmit = (e) => {
+  // إضافة تعليق جديد
+  const handleCommentSubmit = async (e) => {
     e.preventDefault();
 
     if (!currentUser) {
@@ -76,7 +70,6 @@ export default function TourDetails() {
 
     if (comment.trim()) {
       const newComment = {
-        id: new Date().getTime(),
         userName,
         userEmail,
         userPhoto,
@@ -89,86 +82,78 @@ export default function TourDetails() {
         }),
       };
 
-      const updatedComments = [...commentsList, newComment];
-      setCommentsList(updatedComments);
-
-      localStorage.setItem(
-        `commentsList-${landmark}`,
-        JSON.stringify(updatedComments)
-      );
-
-      setComment("");
-      setStarRating(0);
-      setEditingComment(null);
+      try {
+        await addDoc(commentsCollectionRef, newComment);
+        setCommentsList([...commentsList, newComment]);
+        setComment("");
+        setStarRating(0);
+      } catch (error) {
+        console.error("Error adding comment:", error);
+      }
     }
   };
-
+  const handleStarChange = (star) => {
+    setStarRating(star);
+  };
+  const handleCommentChange = (e) => {
+    setComment(e.target.value);
+  };
   const handleEditComment = (commentId) => {
     const commentToEdit = commentsList.find(
       (comment) => comment.id === commentId
     );
-    if (commentToEdit.userEmail === userEmail) {
+    if (commentToEdit) {
       setEditingComment(commentToEdit);
       setComment(commentToEdit.comment);
       setStarRating(commentToEdit.rating);
     }
   };
-
-  const handleUpdateComment = () => {
-    if (comment.trim()) {
-      const updatedComments = commentsList.map((commentData) => {
-        if (commentData.id === editingComment.id) {
-          return { ...commentData, comment, rating: starRating };
-        }
-        return commentData;
-      });
-      setCommentsList(updatedComments);
-
-      localStorage.setItem(
-        `commentsList-${landmark}`,
-        JSON.stringify(updatedComments)
-      );
-
-      setComment("");
-      setStarRating(0);
-      setEditingComment(null);
-    }
-  };
-
   const handleDeleteComment = (commentId) => {
-    const commentToDelete = commentsList.find(
-      (comment) => comment.id === commentId
-    );
-    if (commentToDelete.userEmail === userEmail) {
-      setCommentToDelete(commentId);
-      setDeleteModal(true);
+    setDeleteModal(true);
+    setCommentToDelete(commentId);
+  };
+
+   const handleUpdateComment = async () => {
+    if (comment.trim() && editingComment) {
+      try {
+        const commentDoc = doc(db, `comments-${landmark}`, editingComment.id);
+        await updateDoc(commentDoc, { comment, rating: starRating });
+
+        const updatedComments = commentsList.map((commentData) =>
+          commentData.id === editingComment.id
+            ? { ...commentData, comment, rating: starRating }
+            : commentData
+        );
+        setCommentsList(updatedComments);
+        setComment("");
+        setStarRating(0);
+        setEditingComment(null);
+      } catch (error) {
+        console.error("Error updating comment:", error);
+      }
     }
   };
-
-  const confirmDelete = () => {
-    const updatedComments = commentsList.filter(
-      (comment) => comment.id !== commentToDelete
-    );
-    setCommentsList(updatedComments);
-
-    localStorage.setItem(
-      `commentsList-${landmark}`,
-      JSON.stringify(updatedComments)
-    );
-
-    setDeleteModal(false);
+  const handleLoginRedirect = () => {
+    navigate("/login"); 
   };
 
-  const cancelDelete = () => {
-    setDeleteModal(false);
-    setCommentToDelete(null);
+   const confirmDelete = async () => {
+    try {
+      const commentDoc = doc(db, `comments-${landmark}`, commentToDelete);
+      await deleteDoc(commentDoc);
+
+      const updatedComments = commentsList.filter(
+        (comment) => comment.id !== commentToDelete
+      );
+      setCommentsList(updatedComments);
+      setDeleteModal(false);
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
   };
 
   useEffect(() => {
-    const storedComments = localStorage.getItem(`commentsList-${landmark}`);
-    if (storedComments) {
-      setCommentsList(JSON.parse(storedComments));
-    }
+    fetchComments();
   }, [landmark]);
 
   const totalRatings = commentsList.reduce(
@@ -337,11 +322,13 @@ export default function TourDetails() {
         </Row>
       </Container>
 
-      <Modal isOpen={deleteModal} toggle={cancelDelete}>
-        <ModalHeader toggle={cancelDelete}>Confirm Delete</ModalHeader>
+       <Modal isOpen={deleteModal} toggle={() => setDeleteModal(false)}>
+        <ModalHeader toggle={() => setDeleteModal(false)}>
+          Confirm Delete
+        </ModalHeader>
         <ModalBody>Are you sure you want to delete this comment?</ModalBody>
         <ModalFooter>
-          <Button color="secondary" onClick={cancelDelete}>
+          <Button color="secondary" onClick={() => setDeleteModal(false)}>
             Cancel
           </Button>
           <Button color="danger" onClick={confirmDelete}>

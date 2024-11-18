@@ -200,3 +200,22 @@ h4 {
     margin: 20px auto 0;
   }
 }
+
+
+@media (max-width: 550px) {
+  .review-actions i {
+    border-radius: 5px;
+    color: var(--secondary-color);
+   position: absolute;
+   top: 70px;
+   right: 0px;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 23px;
+    align-items: center;
+     
+  }
+  .review-actions .edit{
+     right: 40px;
+  }
+}
