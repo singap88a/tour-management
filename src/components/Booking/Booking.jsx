@@ -18,7 +18,7 @@ import "react-phone-number-input/style.css";
 import { doc, setDoc } from "firebase/firestore";  
 import { db, auth } from "../../firebase";  
 import { onAuthStateChanged } from "firebase/auth";  
-
+ 
 export default function Booking({ price, averageRating,country }) {
    const [bookingDetails, setBookingDetails] = useState({
     fullName: "",
