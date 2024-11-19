@@ -40,7 +40,7 @@ export default function Tours() {
       img: img01,
       country: "London",
       landmark: "Big Ben",
-      price: "$150",
+      price: 150,
       people: 5,
       rating: 4.5,
       description:
@@ -50,7 +50,7 @@ export default function Tours() {
       img: img03,
       country: "Australia",
       landmark: "Sydney",
-      price: "$120",
+      price: 120,
       people: 8,
       rating: 4.7,
       description:
@@ -60,7 +60,7 @@ export default function Tours() {
       img: img04,
       country: "China",
       landmark: "Wuxi",
-      price: "$180",
+      price: 180,
       people: 6,
       rating: 4.3,
       description:
@@ -70,7 +70,7 @@ export default function Tours() {
       img: img07,
       country: "Thailand",
       landmark: "Phetchabun",
-      price: "$100",
+      price:100,
       people: 4,
       rating: 4.2,
       description:
@@ -80,7 +80,7 @@ export default function Tours() {
       img: img05,
       country: "France",
       landmark: "Paris",
-      price: "$200",
+      price: 200,
       people: 10,
       rating: 4.8,
       description:
@@ -90,7 +90,7 @@ export default function Tours() {
       img: img08,
       country: "Egypt",
       landmark: "Pyramids of Giza",
-      price: "$130",
+      price: 130,
       people: 6,
       rating: 4.4,
       description:
@@ -100,7 +100,7 @@ export default function Tours() {
       img: img06,
       country: "UAE",
       landmark: "Dubai",
-      price: "$250",
+      price: 250,
       people: 15,
       rating: 4.9,
       description:
@@ -110,7 +110,7 @@ export default function Tours() {
       img: img02,
       country: "Indonesia",
       landmark: "Bali",
-      price: "$90",
+      price: 90,
       people: 7,
       rating: 4.6,
       description:
@@ -120,7 +120,7 @@ export default function Tours() {
       img: img09,
       country: "Maldives",
       landmark: "Resorts",
-      price: "$220",
+      price: 220,
       people: 2,
       description:
         "Enjoy a luxury stay at a private resort in the Maldives, a paradise surrounded by crystal-clear waters and breathtaking marine life. Wake up to panoramic views of the Indian Ocean from your overwater villa, and experience world-class amenities designed for ultimate relaxation. Whether you want to dive into the vibrant coral reefs, indulge in a spa day with oceanfront views, or simply relax on your private deck,  .",
@@ -131,7 +131,7 @@ export default function Tours() {
       img: img07,
       country: "Thailand",
       landmark: "Phetchabun",
-      price: "$100",
+      price: 100,
       people: 4,
       rating: 4.2,
       description:
@@ -141,7 +141,7 @@ export default function Tours() {
       img: img10,
       country: "Philippines",
       landmark: "Boracay",
-      price: "$95",
+      price: 95,
       people: 8,
       description:
         "Relax on the pristine beaches of Boracay, Philippines, an island paradise known for its powdery white sands and clear turquoise waters. With its picturesque sunsets, Boracay offers a serene escape for travelers looking to unwind in a tropical haven. You can enjoy a wide variety of activities, from snorkeling in vibrant coral reefs to taking peaceful strolls along the shore. The island’s warm hospitality,  .",
@@ -151,7 +151,7 @@ export default function Tours() {
       img: img11,
       country: "Philippines",
       landmark: "Boracay",
-      price: "$95",
+      price: 95,
       people: 8,
       description:
         "Relax on the pristine beaches of Boracay, Philippines, where unforgettable sunsets and vibrant nightlife combine to create the ultimate tropical escape. Famous for its lively atmosphere, Boracay offers a unique blend of relaxation and entertainment. Whether you're enjoying a peaceful day at one of the many luxury resorts or immersing yourself in the energetic nightlife, the island caters to all. Watersports like parasailing,  .",

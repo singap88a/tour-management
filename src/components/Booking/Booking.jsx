@@ -10,41 +10,42 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter
+  ModalFooter,
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
-import PhoneInput from "react-phone-number-input/input";
-import "react-phone-number-input/style.css";
-import { doc, setDoc } from "firebase/firestore";  
-import { db, auth } from "../../firebase";  
-import { onAuthStateChanged } from "firebase/auth";  
- 
-export default function Booking({ price, averageRating,country }) {
-   const [bookingDetails, setBookingDetails] = useState({
+ import "react-phone-number-input/style.css";
+import { doc, setDoc } from "firebase/firestore";
+import { db, auth } from "../../firebase";
+import { onAuthStateChanged } from "firebase/auth";
+ import PhoneInput from 'react-phone-number-input';   
+import 'react-phone-number-input/style.css';   
+ export default function Booking({ price, averageRating, country }) {
+  const [bookingDetails, setBookingDetails] = useState({
     fullName: "",
   });
   const [phone, setPhone] = useState("");
   const [date, setDate] = useState("");
+  const [numberOfPersons, setNumberOfPersons] = useState(1); // Default to 1 person
   const [error, setError] = useState("");
-  const [showLoginAlert, setShowLoginAlert] = useState(false);  
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);  
+  const [showLoginAlert, setShowLoginAlert] = useState(false);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
-  
+  const totalPrice = price * numberOfPersons + 10; // Calculate total price (with service charge)
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setIsUserLoggedIn(true);  
+        setIsUserLoggedIn(true);
       } else {
-        setIsUserLoggedIn(false);  
+        setIsUserLoggedIn(false);
       }
     });
 
-    return () => unsubscribe();  
+    return () => unsubscribe();
   }, []);
 
- 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setBookingDetails({ ...bookingDetails, [name]: value });
@@ -52,7 +53,12 @@ export default function Booking({ price, averageRating,country }) {
 
   const handleDateChange = (e) => setDate(e.target.value);
 
-   const handleSubmit = async (e) => {
+  const handlePersonChange = (e) => {
+    const value = parseInt(e.target.value) || 1;
+    setNumberOfPersons(value < 1 ? 1 : value); // Ensure at least 1 person
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!bookingDetails.fullName || !phone || !date) {
@@ -61,7 +67,7 @@ export default function Booking({ price, averageRating,country }) {
     }
 
     if (!isUserLoggedIn) {
-      setShowLoginAlert(true);  
+      setShowLoginAlert(true);
       return;
     }
 
@@ -70,14 +76,15 @@ export default function Booking({ price, averageRating,country }) {
         fullName: bookingDetails.fullName,
         phoneNumber: phone,
         date: date,
-        price: price,
-        // averageRating: averageRating,
+        numberOfPersons: numberOfPersons,
+        totalPrice: totalPrice,
+        country: country,
       };
 
-       await setDoc(doc(db, "bookings", `${Date.now()}`), bookingData);
+      await setDoc(doc(db, "bookings", `${Date.now()}`), bookingData);
 
-      setError("");  
-      navigate("/booking-confirmation");  
+      setError("");
+      navigate("/booking-confirmation");
     } catch (err) {
       console.error("Error saving booking:", err);
       setError("Something went wrong. Please try again later.");
@@ -85,9 +92,12 @@ export default function Booking({ price, averageRating,country }) {
   };
 
   const handleLoginRedirect = () => {
-    navigate("/login");  
+    navigate("/login");
   };
-
+  // تغيير قيمة الهاتف
+  const handlePhoneChange = (value) => {
+    setPhone(value);
+  };
   return (
     <Container>
       <Row>
@@ -97,7 +107,7 @@ export default function Booking({ price, averageRating,country }) {
               {price} <span>/per person </span>
             </h1>
             <span style={{ color: "orange" }}>
-              {"★".repeat(Math.floor(averageRating))}
+              ★
               <small style={{ color: "#666" }}>
                 ({averageRating.toFixed(1)})
               </small>
@@ -119,15 +129,14 @@ export default function Booking({ price, averageRating,country }) {
                 />
               </FormGroup>
               <FormGroup>
-                <PhoneInput
-                  country="EG"
-                  value={phone}
-                  onChange={setPhone}
-                  id="phone"
-                  name="phoneNumber"
-                  placeholder="Phone number"
-                />
-              </FormGroup>
+                  <PhoneInput
+                    international
+                    defaultCountry="EG"   
+                    value={phone}
+                    onChange={handlePhoneChange}
+                    placeholder="Phone Number"
+                  />
+                </FormGroup>
               <FormGroup>
                 <input
                   type="date"
@@ -137,16 +146,28 @@ export default function Booking({ price, averageRating,country }) {
                   onChange={handleDateChange}
                 />
               </FormGroup>
+              <FormGroup>
+                <input
+                  type="number"
+                  id="numberOfPersons"
+                  name="numberOfPersons"
+                  value={numberOfPersons}
+                  onChange={handlePersonChange}
+                  placeholder="Number of persons"
+                  min="1"
+                />
+              </FormGroup>
             </div>
             <div className="person">
               <p>
-                {price} * person <span>{price}</span>
+                {price} * {numberOfPersons} persons{" "}
+                <span>{price * numberOfPersons}</span>
               </p>
               <p>
-                Service charge <span>$10</span>  
+                Service charge <span>$10</span>
               </p>
               <h5>
-                Total <span>{price}</span>
+                Total <span>{totalPrice}</span>
               </h5>
             </div>
             <Button type="submit" color="primary">
@@ -156,7 +177,7 @@ export default function Booking({ price, averageRating,country }) {
         </Col>
       </Row>
 
-       {showLoginAlert && (
+      {showLoginAlert && (
         <Modal isOpen={showLoginAlert} toggle={() => setShowLoginAlert(false)}>
           <ModalHeader toggle={() => setShowLoginAlert(false)}>
             Login Required

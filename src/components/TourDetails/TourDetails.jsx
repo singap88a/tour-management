@@ -198,7 +198,7 @@ export default function TourDetails() {
           </Col>
 
           <Col className="tour-details-r" lg="3">
-            <BookingForm price={price} averageRating={averageRating} />
+            <BookingForm price={price} averageRating={averageRating} country={country}/>
           </Col>
 
           <Col className="tour-details-b p-3" lg="8">

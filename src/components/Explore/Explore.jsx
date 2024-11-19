@@ -28,7 +28,7 @@ export default function Explore() {
       img: img01,
       country: "London",
       landmark: "Big Ben",
-      price: "$150",
+      price: 150,
       people: 5,
       rating: 4.5,
       description:
@@ -38,7 +38,7 @@ export default function Explore() {
       img: img03,
       country: "Australia",
       landmark: "Sydney",
-      price: "$120",
+      price: 120,
       people: 8,
       rating: 4.7,
       description:
@@ -48,7 +48,7 @@ export default function Explore() {
       img: img04,
       country: "China",
       landmark: "Wuxi",
-      price: "$180",
+      price: 180,
       people: 6,
       rating: 4.3,
       description:
@@ -58,7 +58,7 @@ export default function Explore() {
       img: img07,
       country: "Thailand",
       landmark: "Phetchabun",
-      price: "$100",
+      price: 100,
       people: 4,
       rating: 4.2,
       description:
@@ -68,7 +68,7 @@ export default function Explore() {
       img: img05,
       country: "France",
       landmark: "Paris",
-      price: "$200",
+      price: 200,
       people: 10,
       rating: 4.8,
       description:
@@ -78,7 +78,7 @@ export default function Explore() {
       img: img02,
       country: "Indonesia",
       landmark: "Bali",
-      price: "$90",
+      price: 90,
       people: 7,
       rating: 4.6,
       description:
@@ -88,7 +88,7 @@ export default function Explore() {
       img: img08,
       country: "Egypt",
       landmark: "Pyramids of Giza",
-      price: "$130",
+      price: 130,
       people: 6,
       rating: 4.4,
       description:
@@ -98,7 +98,7 @@ export default function Explore() {
       img: img06,
       country: "UAE",
       landmark: "Dubai",
-      price: "$250",
+      price: 250,
       people: 15,
       rating: 4.9,
       description:
