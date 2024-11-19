@@ -123,9 +123,11 @@ export default function Footer() {
             </ListGroup>
           </Col>
           <Col lg="12">
-            <p >
-              © 2024 <Link className="footer_top">Vipin_uidesigns.</Link> All Rights Reserved
+            <p>
+              Website developed by 
+              <a href="https://portfolio-536da.web.app/" className="footer_top"> Ahmed Singap </a>© 2024
             </p>
+           
           </Col>
         </Row>
       </Container>

@@ -113,31 +113,31 @@ export default function TourDetails() {
     setCommentToDelete(commentId);
   };
 
-   const handleUpdateComment = async () => {
-    if (comment.trim() && editingComment) {
-      try {
-        const commentDoc = doc(db, `comments-${landmark}`, editingComment.id);
-        await updateDoc(commentDoc, { comment, rating: starRating });
+  // const handleUpdateComment = async () => {
+  //   if (comment.trim() && editingComment) {
+  //     try {
+  //       const commentDoc = doc(db, `comments-${landmark}`, editingComment.id);
+  //       await updateDoc(commentDoc, { comment, rating: starRating,timestamp: new Date(), });
 
-        const updatedComments = commentsList.map((commentData) =>
-          commentData.id === editingComment.id
-            ? { ...commentData, comment, rating: starRating }
-            : commentData
-        );
-        setCommentsList(updatedComments);
-        setComment("");
-        setStarRating(0);
-        setEditingComment(null);
-      } catch (error) {
-        console.error("Error updating comment:", error);
-      }
-    }
-  };
+  //       const updatedComments = commentsList.map((commentData) =>
+  //         commentData.id === editingComment.id
+  //           ? { ...commentData, comment, rating: starRating }
+  //           : commentData
+  //       );
+  //       setCommentsList(updatedComments);
+  //       setComment("");
+  //       setStarRating(0);
+  //       setEditingComment(null);
+  //     } catch (error) {
+  //       console.error("Error updating comment:", error);
+  //     }
+  //   }
+  // };
   const handleLoginRedirect = () => {
-    navigate("/login"); 
+    navigate("/login");
   };
 
-   const confirmDelete = async () => {
+  const confirmDelete = async () => {
     try {
       const commentDoc = doc(db, `comments-${landmark}`, commentToDelete);
       await deleteDoc(commentDoc);
@@ -273,10 +273,11 @@ export default function TourDetails() {
                   <div key={index} className="review-item">
                     <div className="review-header d-flex align-items-center">
                       <img
-                        src={user_img}
+                        src={commentData.userPhoto || user_img}
                         alt={commentData.userName}
                         className="review-user-photo"
                       />
+
                       <div className="text">
                         <h6 className="review-user-name">
                           {commentData.userName}
@@ -297,13 +298,13 @@ export default function TourDetails() {
 
                     {commentData.userEmail === userEmail && (
                       <div className="review-actions">
-                        <i
+                        {/* <i
                           className="edit"
                           color="link"
                           onClick={() => handleEditComment(commentData.id)}
                         >
                           <RiEditLine />
-                        </i>
+                        </i> */}
                         <i
                           color="link"
                           onClick={() => handleDeleteComment(commentData.id)}
@@ -322,7 +323,7 @@ export default function TourDetails() {
         </Row>
       </Container>
 
-       <Modal isOpen={deleteModal} toggle={() => setDeleteModal(false)}>
+      <Modal isOpen={deleteModal} toggle={() => setDeleteModal(false)}>
         <ModalHeader toggle={() => setDeleteModal(false)}>
           Confirm Delete
         </ModalHeader>

@@ -16,6 +16,7 @@ const nav__links = [
 export default function Header() {
   const headerRef = useRef(null);
   const [user, setUser] = useState(null);
+  const [userProfilePic, setUserProfilePic] = useState(defaultProfilePic);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMenuActive, setIsMenuActive] = useState(false);
   const dropdownRef = useRef(null);
@@ -43,6 +44,12 @@ export default function Header() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      if (currentUser) {
+        // Set the Google profile picture or default image if not available
+        setUserProfilePic(
+          currentUser.photoURL || defaultProfilePic
+        );
+      }
     });
     return () => unsubscribe();
   }, []);
@@ -51,6 +58,7 @@ export default function Header() {
     try {
       await signOut(auth);
       setUser(null);
+      setUserProfilePic(defaultProfilePic);
       navigate("/login");
     } catch (error) {
       console.error("Error during logout:", error);
@@ -116,8 +124,8 @@ export default function Header() {
               {user ? (
                 <div className="profile_dropdown" ref={dropdownRef}>
                   <img
-                    src={defaultProfilePic}
-                    alt={defaultProfilePic}
+                    src={userProfilePic}
+                    alt={user.displayName || "User"}
                     className="profile_pic"
                     onClick={toggleDropdown}
                   />
