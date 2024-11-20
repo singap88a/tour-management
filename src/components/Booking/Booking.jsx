@@ -151,7 +151,7 @@ import 'react-phone-number-input/style.css';
                   type="number"
                   id="numberOfPersons"
                   name="numberOfPersons"
-                  value={numberOfPersons}
+                  // value={numberOfPersons}
                   onChange={handlePersonChange}
                   placeholder="Number of persons"
                   min="1"
