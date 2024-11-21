@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.f526c4a1.css",
-    "main.js": "/static/js/main.3cfd709a.js",
+    "main.css": "/static/css/main.e64e4cbc.css",
+    "main.js": "/static/js/main.221d6cc5.js",
     "static/media/hero-video.mp4": "/static/media/hero-video.9e800d0ad3a61e8c12f6.mp4",
     "static/media/remixicon.svg?t=1590207869815": "/static/media/remixicon.9cedd2150922ead84869.svg",
     "static/media/All_Tours.png": "/static/media/All_Tours.d073acd7c0916a7bff2b.png",
@@ -34,7 +34,9 @@
     "static/media/PHILIPPINES_10.png": "/static/media/PHILIPPINES_10.8aadeda7ba7d66c16aae.png",
     "static/media/THAILAND_6.png": "/static/media/THAILAND_6.6eb3e5b3ef526c9fb02b.png",
     "static/media/MALDIVES_8.png": "/static/media/MALDIVES_8.4b4989fa08cf4168aded.png",
+    "static/media/Japan.jpg": "/static/media/Japan.fa35919b4c99c0cd6b0c.jpg",
     "static/media/world.png": "/static/media/world.12b28835610f2449f5e9.png",
+    "static/media/Italy.jpg": "/static/media/Italy.9eea5117af2525fa076d.jpg",
     "static/media/EGYPT.jpg": "/static/media/EGYPT.fa53ee3faba050028d37.jpg",
     "static/media/logo.png": "/static/media/logo.20544e60ea4eaeee7661.png",
     "static/media/Australia_33.avif": "/static/media/Australia_33.d9c9f61ff1794e5878d9.avif",
@@ -44,11 +46,11 @@
     "static/media/slick.ttf": "/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/index.html",
-    "main.f526c4a1.css.map": "/static/css/main.f526c4a1.css.map",
-    "main.3cfd709a.js.map": "/static/js/main.3cfd709a.js.map"
+    "main.e64e4cbc.css.map": "/static/css/main.e64e4cbc.css.map",
+    "main.221d6cc5.js.map": "/static/js/main.221d6cc5.js.map"
   },
   "entrypoints": [
-    "static/css/main.f526c4a1.css",
-    "static/js/main.3cfd709a.js"
+    "static/css/main.e64e4cbc.css",
+    "static/js/main.221d6cc5.js"
   ]
 }

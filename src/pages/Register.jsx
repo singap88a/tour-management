@@ -158,7 +158,7 @@ function Register() {
                     <img src={apple} alt="" />
                   </a>
                 </div>
-                <p>
+                <p className="p-3">
                   Already have an account? <Link to="/login">Log In</Link>
                 </p>
                 <div className="top_login">

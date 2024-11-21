@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Header.css";
-import { Container, Row, Button } from "reactstrap";
+import {
+  Container,
+  Row,
+  Button,
+  Modal,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
@@ -19,6 +26,7 @@ export default function Header() {
   const [userProfilePic, setUserProfilePic] = useState(defaultProfilePic);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMenuActive, setIsMenuActive] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for Modal
   const dropdownRef = useRef(null);
   const overlayRef = useRef(null);
   const navigate = useNavigate();
@@ -45,10 +53,7 @@ export default function Header() {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        // Set the Google profile picture or default image if not available
-        setUserProfilePic(
-          currentUser.photoURL || defaultProfilePic
-        );
+        setUserProfilePic(currentUser.photoURL || defaultProfilePic);
       }
     });
     return () => unsubscribe();
@@ -59,6 +64,8 @@ export default function Header() {
       await signOut(auth);
       setUser(null);
       setUserProfilePic(defaultProfilePic);
+      setIsModalOpen(false); // Close the modal
+      setIsMenuActive(false); // Close the menu overlay
       navigate("/login");
     } catch (error) {
       console.error("Error during logout:", error);
@@ -71,6 +78,13 @@ export default function Header() {
 
   const toggleMenu = () => {
     setIsMenuActive(!isMenuActive);
+  };
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+    if (isModalOpen) {
+      setIsMenuActive(false); // Close the overlay when modal is toggled
+    }
   };
 
   useEffect(() => {
@@ -132,7 +146,7 @@ export default function Header() {
                   {isDropdownOpen && (
                     <div className="dropdown_menu">
                       <span>{user.displayName || user.email}</span>
-                      <Button className="btn" onClick={handleLogout}>
+                      <Button className="btn" onClick={toggleModal}>
                         Logout
                       </Button>
                     </div>
@@ -140,11 +154,38 @@ export default function Header() {
                 </div>
               ) : (
                 <div className="nav_btns d-flex align-items-center gap-4">
-                  <NavLink to="/login">
-                    <Button className="btn secondary__btn">Login</Button>
+                  <NavLink
+                    to="/login"
+                    className={({ isActive }) =>
+                      isActive ? "active_link" : ""
+                    }
+                  >
+                    {({ isActive }) => (
+                      <Button
+                        className={`btn ${
+                          isActive ? "primary__btn" : "primary__btn_active"
+                        }`}
+                      >
+                        Login
+                      </Button>
+                    )}
                   </NavLink>
-                  <NavLink to="/register">
-                    <Button className="btn primary__btn">Register</Button>
+
+                  <NavLink
+                    to="/register"
+                    className={({ isActive }) =>
+                      isActive ? "active_link" : ""
+                    }
+                  >
+                    {({ isActive }) => (
+                      <Button
+                        className={`btn ${
+                          isActive ? "primary__btn" : "primary__btn_active"
+                        }`}
+                      >
+                        Register
+                      </Button>
+                    )}
                   </NavLink>
                 </div>
               )}
@@ -159,7 +200,22 @@ export default function Header() {
         </Row>
       </Container>
 
-      {isMenuActive && <div className="menu_overlay"></div>}
+      {/* {isMenuActive && <div className="menu_overlay" ref={overlayRef}></div>} */}
+
+      {/* Confirmation Modal */}
+      <Modal isOpen={isModalOpen} toggle={toggleModal} centered>
+        <ModalBody>
+          <h5>Are you sure you want to logout?</h5>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="danger" onClick={handleLogout}>
+            Confirm
+          </Button>
+          <Button color="secondary" onClick={toggleModal}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
     </header>
   );
 }

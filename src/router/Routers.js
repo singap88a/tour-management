@@ -9,10 +9,13 @@ import SearchResultList from "./../pages/SearchResultList";
 import About from "../pages/About";
 import ProtectedRoute from "./ProtectedRoute";
 import BookingConfirmation from "../pages/BookingConfirmation";
+import ScrollToTop from "../components/ScrollToTop/ScrollToTop";
+import MoreTours from "../pages/MoreTours";
 
 export default function Routers() {
   return (
     <div>
+      <ScrollToTop/>
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
 
@@ -28,6 +31,8 @@ export default function Routers() {
 
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/more-tours" element={<MoreTours />} />
+
       </Routes>
     </div>
   );

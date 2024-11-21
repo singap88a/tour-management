@@ -20,7 +20,7 @@
    box-shadow: 3px 2px 11px 3px rgba(255, 166, 0, 0.329);
   border-radius: 10px;
   position: relative;
-  height: 600px;
+  height: 650px;
 }
 .register-container .form-section h2 {
   color: var(--secondary-color);

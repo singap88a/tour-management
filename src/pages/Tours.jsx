@@ -31,10 +31,13 @@ import img08 from "./../assets/images/Explore/EGYPT.jpg";
 import img09 from "./../assets/images/Explore/MALDIVES_8.png";
 import img10 from "./../assets/images/Explore/PHILIPPINES_10.png";
 import img11 from "./../assets/images/Explore/THAILAND_9.png";
+import img12 from "./../assets/images/Explore/Italy.jpg";
+import img13 from "./../assets/images/Explore/Japan.jpg";
+import { useNavigate } from "react-router-dom";
 
 export default function Tours() {
   const [showAll, setShowAll] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");  
+  const [searchQuery, setSearchQuery] = useState("");
   const [Explore, setExplore] = useState([
     {
       img: img01,
@@ -70,7 +73,7 @@ export default function Tours() {
       img: img07,
       country: "Thailand",
       landmark: "Phetchabun",
-      price:100,
+      price: 100,
       people: 4,
       rating: 4.2,
       description:
@@ -147,6 +150,17 @@ export default function Tours() {
         "Relax on the pristine beaches of Boracay, Philippines, an island paradise known for its powdery white sands and clear turquoise waters. With its picturesque sunsets, Boracay offers a serene escape for travelers looking to unwind in a tropical haven. You can enjoy a wide variety of activities, from snorkeling in vibrant coral reefs to taking peaceful strolls along the shore. The island’s warm hospitality,  .",
       rating: 4.3,
     },
+
+    {
+      img: img12,
+      country: "Italy",
+      landmark: "Venice",
+      price: 170,
+      people: 6,
+      rating: 4.6,
+      description:
+        "Explore the romantic canals of Venice, Italy, a city built on water and known for its breathtaking architecture and art. Glide through the waterways on a gondola ride, admire the stunning St. Mark's Basilica, and indulge in authentic Italian cuisine. From the iconic Rialto Bridge to the serene beauty of the Venetian Lagoon, Venice offers an enchanting experience for every traveler.",
+    },
     {
       img: img11,
       country: "Philippines",
@@ -157,15 +171,32 @@ export default function Tours() {
         "Relax on the pristine beaches of Boracay, Philippines, where unforgettable sunsets and vibrant nightlife combine to create the ultimate tropical escape. Famous for its lively atmosphere, Boracay offers a unique blend of relaxation and entertainment. Whether you're enjoying a peaceful day at one of the many luxury resorts or immersing yourself in the energetic nightlife, the island caters to all. Watersports like parasailing,  .",
       rating: 4.3,
     },
-   ]);
+    {
+      img: img13,
+      country: "Japan",
+      landmark: "Kyoto",
+      price: 140,
+      people: 5,
+      rating: 4.8,
+      description:
+        "Immerse yourself in the cultural heart of Japan in Kyoto, a city rich with ancient temples, serene gardens, and vibrant traditions. Wander through the bamboo groves of Arashiyama, visit the golden pavilion of Kinkaku-ji, and participate in a traditional tea ceremony. With its timeless charm and exquisite scenery, Kyoto is a destination that perfectly blends history, spirituality, and natural beauty.",
+    },
+    
+  ]);
 
-  const [modal, setModal] = useState(false);  
+  const navigate = useNavigate();
 
-  const filteredTours = Explore.filter(
-    (tour) => tour.country.toLowerCase().includes(searchQuery.toLowerCase())  
+  const handleLoadMore = () => {
+    const remainingTours = filteredTours.slice(10); // باقي الرحلات بعد أول 10
+    navigate("/more-tours", { state: { remainingTours } });
+  };
+  const [modal, setModal] = useState(false);
+
+  const filteredTours = Explore.filter((tour) =>
+    tour.country.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const initialImages = filteredTours.slice(0, 10);  
+  const initialImages = filteredTours.slice(0, 10);
 
   return (
     <section>
@@ -203,7 +234,7 @@ export default function Tours() {
                             <div className="image-container" key={index}>
                               <Link to={`/tours/${item.country}`} state={item}>
                                 {" "}
-                                 <img
+                                <img
                                   src={item.img}
                                   alt={item.country}
                                   className="explore-image"
@@ -228,12 +259,15 @@ export default function Tours() {
             </section>
 
             {!showAll && (
-              <div className="text-center mt-4">
+              <div className="text-center mt-4   aling-items-center">
                 <button
                   className="btn_Load-More"
-                  onClick={() => setShowAll(true)}
+                  onClick={() => navigate("/tours")}
                 >
-                  Load More
+                  1
+                </button>
+                <button className="btn_Load-More" onClick={handleLoadMore}>
+                  2
                 </button>
               </div>
             )}

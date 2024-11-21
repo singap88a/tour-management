@@ -115,7 +115,7 @@ function Login() {
                   </a>
                 </div>
 
-                <p>
+                <p className="p-3">
                   Don't have an account? <Link to="/register">Register</Link>
                 </p>
                 <div className="top_login">
